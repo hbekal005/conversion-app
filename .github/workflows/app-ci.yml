@@ -8,7 +8,7 @@ on:
         description: 'Input App Version to Tag and Release'
         required: true
         type: string
-        default: "1.0.0"
+        default: "latest"
   push:
     branches:
       - main
