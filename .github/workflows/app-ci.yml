@@ -1,4 +1,5 @@
 name: Application_CI_Workflow
+run-name: conversion-app ${{ github.event.inputs.App_Version }}
 
 on:
   workflow_dispatch:
@@ -53,10 +54,7 @@ jobs:
         run: |
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
-      - name: Docker Tag
+      - name: Docker Tag and Push
         run: |
           docker tag ${{ github.repository }}:${{ github.event.inputs.App_Version }} ${{ secrets.DOCKER_USERNAME }}/${{ github.repository }}:${{ github.event.inputs.App_Version }}
-
-      - name: Docker Push
-        run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ github.repository }}:${{ github.event.inputs.App_Version }}
