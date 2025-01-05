@@ -9,11 +9,6 @@ on:
         required: true
         type: string
         default: "1.0.0"
-      Branch_Name:
-        description: 'Input Branch Name to Tag and Release'
-        required: true
-        type: string
-        default: "main"
   push:
     branches:
       - main
@@ -36,9 +31,6 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@v4
-        with:
-          repository: '${{ github.repository }}'
-          ref: ${{ github.event.inputs.Branch_Name }}
 
       - name: Build with Maven
         run: mvn clean package
@@ -48,7 +40,9 @@ jobs:
 
       - name: Docker Build
         run: |
-          docker build --build-arg SERVER_PORT=$(grep -oP '(?<=server.port=)\d+' src/main/resources/application.properties) -t ${{ github.repository }}:${{ github.event.inputs.App_Version }} .
+          SERVER_PORT=$(grep -oP '(?<=server.port=)\d+' src/main/resources/application.properties)
+          echo "Server port: $SERVER_PORT"
+          docker build --build-arg SERVER_PORT=$SERVER_PORT -t conversion-app:${{ github.event.inputs.App_Version }} .
 
       - name: Login to Docker Hub
         run: |
@@ -56,5 +50,5 @@ jobs:
 
       - name: Docker Tag and Push
         run: |
-          docker tag ${{ github.repository }}:${{ github.event.inputs.App_Version }} ${{ secrets.DOCKER_USERNAME }}/${{ github.repository }}:${{ github.event.inputs.App_Version }}
+          docker tag conversion-app:${{ github.event.inputs.App_Version }} ${{ secrets.DOCKER_USERNAME }}/conversion-app:${{ github.event.inputs.App_Version }}
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ github.repository }}:${{ github.event.inputs.App_Version }}
