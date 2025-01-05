@@ -56,14 +56,14 @@ jobs:
           cd ${{ github.workspace }}/${{ github.repository }}
           docker build --build-arg SERVER_PORT=$(grep -oP '(?<=server.port=)\d+' src/main/resources/application.properties) -t ${{ github.repository }}:${{ github.event.inputs.App_Version }} .
           
-      - Name: Login to Docker Hub
+      - name: Login to Docker Hub
         run: |
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
-      - Name: Docker Tag
+      - name: Docker Tag
         run: |
           docker tag ${{ github.repository }}:${{ github.event.inputs.App_Version }} ${{ secrets.DOCKER_USERNAME }}/${{ github.repository }}:${{ github.event.inputs.App_Version }}
 
-      - Name: Docker Push
+      - name: Docker Push
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ github.repository }}:${{ github.event.inputs.App_Version }}
