@@ -1,5 +1,5 @@
 name: Application_CI_Workflow
-run-name: conversion-app ${{ github.event.inputs.App_Version }}
+run-name: conversion-app:${{ github.event.inputs.App_Version }}
 
 on:
   workflow_dispatch:
