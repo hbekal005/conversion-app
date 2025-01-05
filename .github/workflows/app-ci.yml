@@ -17,7 +17,6 @@ on:
     branches:
       - main
 
-
 jobs:
   Build_And_Test:
     name: Build and Test
@@ -40,22 +39,16 @@ jobs:
           repository: '${{ github.repository }}'
           ref: ${{ github.event.inputs.Branch_Name }}
 
-
       - name: Build with Maven
-        run: |
-          cd ${{ github.workspace }}/${{ github.repository }}
-          mvn clean package
+        run: mvn clean package
 
       - name: Test with Maven
-        run: |
-          cd ${{ github.workspace }}/${{ github.repository }}
-          mvn test
+        run: mvn test
 
       - name: Docker Build
         run: |
-          cd ${{ github.workspace }}/${{ github.repository }}
           docker build --build-arg SERVER_PORT=$(grep -oP '(?<=server.port=)\d+' src/main/resources/application.properties) -t ${{ github.repository }}:${{ github.event.inputs.App_Version }} .
-          
+
       - name: Login to Docker Hub
         run: |
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
