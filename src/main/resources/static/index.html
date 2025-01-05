@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Conversion</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        #container {
+            text-align: center;
+        }
+        #response {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+    </style>
+    <script>
+        async function validateForm(event) {
+            event.preventDefault();
+            const value = document.getElementById("value").value;
+            const inputUnit = document.getElementById("inputUnit").value;
+            const targetUnit = document.getElementById("targetUnit").value;
+            const studentResponse = document.getElementById("studentResponse").value;
+
+            if (inputUnit === targetUnit) {
+                alert("inputUnit and targetUnit cannot be the same");
+                return;
+            }
+
+            const response = await fetch(`/validate?value=${value}&inputUnit=${inputUnit}&targetUnit=${targetUnit}&studentResponse=${studentResponse}`);
+            const result = await response.json();
+
+            const responseElement = document.getElementById("response");
+            responseElement.innerText = `Converted Value: ${result.convertedValue}, Response: ${result.response}`;
+            responseElement.className = result.response === "correct" ? "correct" : "incorrect";
+        }
+    </script>
+</head>
+<body>
+<div id="container">
+    <h1>Temperature Conversion</h1>
+    <form onsubmit="validateForm(event)">
+        <label for="value">Temperature Value:</label>
+        <input type="text" id="value" name="value" required><br><br>
+
+        <label for="inputUnit">From Unit:</label>
+        <select id="inputUnit" name="inputUnit" required>
+            <option value="celsius">Celsius</option>
+            <option value="fahrenheit">Fahrenheit</option>
+            <option value="kelvin">Kelvin</option>
+            <option value="rankine">Rankine</option>
+        </select><br><br>
+
+        <label for="targetUnit">To Unit:</label>
+        <select id="targetUnit" name="targetUnit" required>
+            <option value="celsius">Celsius</option>
+            <option value="fahrenheit">Fahrenheit</option>
+            <option value="kelvin">Kelvin</option>
+            <option value="rankine">Rankine</option>
+        </select><br><br>
+
+        <label for="studentResponse">Student Response:</label>
+        <input type="text" id="studentResponse" name="studentResponse" required><br><br>
+
+        <input type="submit" value="Validate">
+    </form>
+    <p id="response"></p>
+</div>
+</body>
+</html>

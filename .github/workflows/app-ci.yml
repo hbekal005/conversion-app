@@ -1,0 +1,69 @@
+name: Application_CI_Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      App_Version:
+        description: 'Input App Version to Tag and Release'
+        required: true
+        type: string
+        default: "1.0.0"
+      Branch_Name:
+        description: 'Input Branch Name to Tag and Release'
+        required: true
+        type: string
+        default: "main"
+  push:
+    branches:
+      - main
+
+
+jobs:
+  Build_And_Test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt' # 'adopt', 'openjdk', 'temurin'
+          java-version: '21'
+
+      - name: Setup Maven
+        uses: s4u/maven-settings-action@v2
+        with:
+          maven-version: '3.9'
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          repository: '${{ github.repository }}'
+          ref: ${{ github.event.inputs.Branch_Name }}
+
+
+      - name: Build with Maven
+        run: |
+          cd ${{ github.workspace }}/${{ github.repository }}
+          mvn clean package
+
+      - name: Test with Maven
+        run: |
+          cd ${{ github.workspace }}/${{ github.repository }}
+          mvn test
+
+      - name: Docker Build
+        run: |
+          cd ${{ github.workspace }}/${{ github.repository }}
+          docker build --build-arg SERVER_PORT=$(grep -oP '(?<=server.port=)\d+' src/main/resources/application.properties) -t ${{ github.repository }}:${{ github.event.inputs.App_Version }} .
+          
+      - Name: Login to Docker Hub
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - Name: Docker Tag
+        run: |
+          docker tag ${{ github.repository }}:${{ github.event.inputs.App_Version }} ${{ secrets.DOCKER_USERNAME }}/${{ github.repository }}:${{ github.event.inputs.App_Version }}
+
+      - Name: Docker Push
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ github.repository }}:${{ github.event.inputs.App_Version }}
