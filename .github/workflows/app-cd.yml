@@ -29,7 +29,8 @@ on:
 
 jobs:
   App_Deploy:
-    name: Create or Update Infra
+    if: vars.BACKEND_INFRA_FLAG != 'true'
+    name: Create or Update Backend Infrastructure
     runs-on: ubuntu-latest
     steps:
       - name: Checkout App Repository
@@ -80,4 +81,13 @@ jobs:
         run: | 
             cd ${{ github.workspace }}/conversion-app-infra/backend-infra-prerequisites
             terraform apply -auto-approve "backend-tfplan"
+      
+      - name: Backend Prerequisites Outputs
+        id: set-backend-outputs
+        if: success()
+        run: |
+            cd ${{ github.workspace }}/conversion-app-infra/backend-infra-prerequisites
+            echo "backend_s3_bucket=$(terraform output -raw backend_s3_bucket)"
+            echo "backend_dynamodb_table=$(terraform output -raw backend_dynamodb_table)"
+            echo "BACKEND_INFRA_FLAG=true" >> $GITHUB_ENV
     
