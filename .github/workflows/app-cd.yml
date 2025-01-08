@@ -34,8 +34,6 @@ jobs:
     steps:
       - name: Checkout App Repository
         uses: actions/checkout@v4
-        with:
-          repository: 'conversion-app'
 
       - name: Checkout Infra Repository
         uses: actions/checkout@v4
