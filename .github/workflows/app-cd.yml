@@ -35,7 +35,7 @@ jobs:
       - name: Checkout Infra Repository
         uses: actions/checkout@v4
         with:
-          repository: 'github.com/hbekal005/conversion-app-infra'
+          repository: 'conversion-app-infra'
           ref: 'main'
           path: 'conversion-app-infra'
 
