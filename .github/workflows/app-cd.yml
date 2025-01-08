@@ -57,10 +57,18 @@ jobs:
             cd ${{ github.workspace }}/conversion-app-infra/backend-infra-prerequisites
             terraform init
 
+      - name: Terraform Validate for Backend Prerequisites
+        id: terraform-backend-validate
+        if: success()
+        run: |
+            cd ${{ github.workspace }}/conversion-app-infra/backend-infra-prerequisites
+            terraform validate
+
       - name: Terraform Plan for Backend Prerequisites
         id: terraform-backend-plan
         if: success()
         run: |
+            cd ${{ github.workspace }}/conversion-app-infra/backend-infra-prerequisites
             terraform plan \
               -var 'AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}' \
               -var 'AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}' \
