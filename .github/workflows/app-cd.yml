@@ -32,10 +32,16 @@ jobs:
     name: Create or Update Infra
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout App Repository
+        uses: actions/checkout@v4
+        with:
+          repository: 'conversion-app'
+
       - name: Checkout Infra Repository
         uses: actions/checkout@v4
         with:
-          repository: 'conversion-app-infra'
+          repository: 'hbekal005/conversion-app-infra'
+          token: ${{ secrets.GIT_INFRA_REPO_TOKEN }}
           ref: 'main'
           path: 'conversion-app-infra'
 
