@@ -39,10 +39,10 @@ jobs:
         run: mvn test
 
       - name: Docker Build
+      
         run: |
-          SERVER_PORT=$(grep -oP '(?<=server.port=)\d+' src/main/resources/application.properties)
-          echo "Server port: $SERVER_PORT"
-          docker build --build-arg SERVER_PORT=$SERVER_PORT -t conversion-app:${{ github.event.inputs.App_Version }} .
+          docker build -t conversion-app:${{ github.event.inputs.App_Version }} -f ${{github.workspace}}/Dockerfile .
+          
 
       - name: Login to Docker Hub
         run: |
