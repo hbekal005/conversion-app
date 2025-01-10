@@ -8,6 +8,7 @@ WORKDIR /app
 COPY target/conversion-app-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 80
+EXPOSE 8080
 
 # Run the JAR file
 ENTRYPOINT ["java", "-jar", "app.jar"]
