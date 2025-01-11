@@ -51,5 +51,5 @@ jobs:
 
       - name: Docker Tag and Push
         run: |
-          docker tag conversion-app:${{ github.event.inputs.App_Version }} ${{ secrets.DOCKER_USERNAME }}/conversion-app:${{ github.event.inputs.App_Version }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/conversion-app:${{ github.event.inputs.App_Version }}
+          docker tag conversion-app:${{ inputs.App_Version }} ${{ secrets.DOCKER_USERNAME }}/conversion-app:${{ inputs.App_Version }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/conversion-app:${{ inputs.App_Version }}
