@@ -3,6 +3,7 @@ run-name: conversion-app:${{ github.event.inputs.App_Version }}
 
 on:
   workflow_dispatch:
+  workflow_call:
     inputs:
       App_Version:
         description: 'Input App Version to Tag and Release'
