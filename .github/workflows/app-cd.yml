@@ -1,0 +1,87 @@
+name: Application_CD_Workflow
+run-name: ${{github.event.inputs.Environment}}: conversion-app:${{ github.event.inputs.App_Version }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      App_Version:
+        description: 'Input App Version to Tag and Release'
+        required: true
+        type: string
+        default: "latest"
+      Environment:
+        description: 'Input Environment to Deploy'
+        required: true
+        type: choice
+        default: "dev"
+        options:
+          - "dev"
+          - "stg"
+          - "prod"
+
+jobs:
+  App_Deploy:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Checkout Infra Repository
+        uses: actions/checkout@v4
+        with:
+          repository: 'hbekal005/conversion-app-infra'
+          ref: main
+          token: ${{ secrets.GIT_INFRA_REPO_TOKEN }}
+          path: conversion-app-infra
+
+      - name: Setup Terraform
+        id: setup-terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: '1.10'
+
+      - name: Terraform Init for ECS Cluster
+        id: terraform-ecs-init
+        run: |
+          cd ${{ github.workspace }}/conversion-app-infra/ecs-fargate-cluster
+          terraform init
+
+      - name: Terraform Create or Switch Workspace for ECS Cluster
+        if: success()
+        id: terraform-ecs-workspace
+        run: |
+          cd ${{ github.workspace }}/conversion-app-infra/ecs-fargate-cluster
+          terraform workspace select ${{ github.event.inputs.Environment }} || terraform workspace new ${{ github.event.inputs.Environment }}
+      
+      - name: Terraform Validate for ECS Cluster
+        if: success()
+        id: terraform-ecs-validate
+        run: |
+          cd ${{ github.workspace }}/conversion-app-infra/ecs-fargate-cluster
+          terraform validate
+
+      - name: Terraform Plan for ECS Cluster
+        if: success()
+        id: terraform-ecs-plan
+        run: |
+          cd ${{ github.workspace }}/conversion-app-infra/ecs-fargate-cluster
+          terraform plan \
+            -var "application_image_name=${{ github.event.inputs.App_Version }}" \
+            -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" \
+            -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
+            -out=ecs-tfplan
+
+      - name: Terraform Apply for ECS Cluster
+        if: success()
+        id: terraform-ecs-apply
+        run: |
+          cd ${{ github.workspace }}/conversion-app-infra/ecs-fargate-cluster
+          terraform apply ecs-tfplan
+
+      - name: Terraform Output for ECS Cluster
+        if: success()
+        id: terraform-ecs-output
+        run: |
+          cd ${{ github.workspace }}/conversion-app-infra/ecs-fargate-cluster
+          echo "ECS_DNS : $(terraform output -raw ecs_dns_name)"
