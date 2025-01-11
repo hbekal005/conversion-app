@@ -1,0 +1,49 @@
+name: Application_CI_CD_Workflow
+run-name: Conversion_App CI/CD Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Conversion_App_End_To_End_CI_CD:
+    runs-on: ubuntu-latest
+    outputs:
+      APP_VERSION : ${{ steps.set-config-env.outputs.App_Version }}
+      APP_ENV : ${{ steps.set-config-env.outputs.App_Env }}
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Read Configuration File
+        id: read-config
+        uses: antifree/json-to-variables@v1.2.0
+        with:
+          filename: ${{ github.workspace }}/conversion-app-deploy-config.json
+          prefix: APP_DEPLOY_CONFIG
+
+      - name: Print and Set Environment Variables
+        id: set-config-env
+        run: |
+          echo "App_Version: ${{ env.APP_DEPLOY_CONFIG_APP_VERSION }}"
+          echo "::set-output name=App_Version::${{ env.APP_DEPLOY_CONFIG_APP_VERSION }}"
+
+          echo "App_Env: ${{ steps.read-config.outputs.APP_DEPLOY_CONFIG_APP_ENV }}"
+          echo "::set-output name=App_Env::${{ env.APP_DEPLOY_CONFIG_APP_ENV }}"
+
+  Conversion_App_CI:
+    name: Conversion_App CI
+    needs: [ Conversion_App_End_To_End_CI_CD ]
+    uses: ./github/workflows/app-cd.yml
+    with:
+      App_Version: ${{ needs.Conversion_App_End_To_End_CI_CD.outputs.APP_VERSION }}
+    secrets: inherit
+
+  # Conversion_App_CD:
+  #   name: Conversion_App CD
+  #   needs: [ Conversion_App_End_To_End_CI_CD, Conversion_App_CI ]
+  #   uses: ./github/workflows/app-cd.yml
+  #   with:
+  #     App_Version: ${{ needs.Conversion_App_End_To_End_CI_CD.outputs.APP_VERSION }}
+  #     Environment: ${{ needs.Conversion_App_End_To_End_CI_CD.outputs.APP_ENV }}
+  #   secrets: inherit

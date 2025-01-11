@@ -9,9 +9,6 @@ on:
         required: true
         type: string
         default: "latest"
-  push:
-    branches:
-      - main
 
 jobs:
   Build_And_Test:
