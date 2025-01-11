@@ -3,6 +3,17 @@ run-name: ${{ inputs.App_Version }}-conversion-app:${{ inputs.App_Version }}
 
 on:
   workflow_dispatch:
+    inputs:
+      App_Version:
+        description: 'Input App Version to Deploy'
+        required: true
+        type: string
+        default: "latest"
+      Environment:
+        description: 'Input Environment to Deploy'
+        required: true
+        type: string
+        default: "dev"
   workflow_call:
     inputs:
       App_Version:
