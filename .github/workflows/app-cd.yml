@@ -1,5 +1,5 @@
 name: Application_CD_Workflow
-run-name: ${{github.event.inputs.Environment}}: conversion-app:${{ github.event.inputs.App_Version }}
+run-name: ${{ inputs.App_Version }}-conversion-app:${{ inputs.App_Version }}
 
 on:
   workflow_dispatch:
@@ -13,12 +13,8 @@ on:
       Environment:
         description: 'Input Environment to Deploy'
         required: true
-        type: choice
+        type: string
         default: "dev"
-        options:
-          - "dev"
-          - "stg"
-          - "prod"
 
 jobs:
   App_Deploy:
@@ -53,7 +49,7 @@ jobs:
         id: terraform-ecs-workspace
         run: |
           cd ${{ github.workspace }}/conversion-app-infra/ecs-fargate-cluster
-          terraform workspace select ${{ github.event.inputs.Environment }} || terraform workspace new ${{ github.event.inputs.Environment }}
+          terraform workspace select ${{ inputs.Environment }} || terraform workspace new ${{ inputs.Environment }}
       
       - name: Terraform Validate for ECS Cluster
         if: success()
@@ -68,7 +64,7 @@ jobs:
         run: |
           cd ${{ github.workspace }}/conversion-app-infra/ecs-fargate-cluster
           terraform plan \
-            -var "application_image_name=${{ github.event.inputs.App_Version }}" \
+            -var "application_image_name=${{ inputs.App_Version }}" \
             -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" \
             -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
             -out=ecs-tfplan

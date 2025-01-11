@@ -1,5 +1,5 @@
 name: Application_CI_CD_Workflow
-run-name: Conversion_App CI/CD Workflow
+run-name: Conversion_App_CI/CD_Workflow
 
 on:
   workflow_dispatch:
@@ -23,6 +23,7 @@ jobs:
           prefix: APP_DEPLOY_CONFIG
 
       - name: Print and Set Environment Variables
+        if: success()
         id: set-config-env
         run: |
           echo "App_Version: ${{ env.APP_DEPLOY_CONFIG_APP_VERSION }}"
@@ -32,7 +33,7 @@ jobs:
           echo "::set-output name=App_Env::${{ env.APP_DEPLOY_CONFIG_APP_ENV }}"
 
   Conversion_App_CI:
-    name: Conversion_App CI
+    name: Conversion_App_CI
     needs: [ Read_Config ]
     uses: ./.github/workflows/app-ci.yml
     with:
@@ -40,7 +41,7 @@ jobs:
     secrets: inherit
 
   # Conversion_App_CD:
-  #   name: Conversion_App CD
+  #   name: Conversion_App_CD
   #   needs: [ Read_Config, Conversion_App_CI ]
   #   uses: ./.github/workflows/app-cd.yml
   #   with:
