@@ -89,7 +89,7 @@ jobs:
         id: terraform-ecs-apply
         run: |
           cd ${{ github.workspace }}/conversion-app-infra/ecs-fargate-cluster
-          terraform apply ecs-tfplan
+          terraform apply "ecs-tfplan"
 
       - name: Terraform Output for ECS Cluster
         if: success()
