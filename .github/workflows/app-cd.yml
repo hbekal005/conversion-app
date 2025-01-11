@@ -13,11 +13,11 @@ on:
         description: 'Input Environment to Deploy'
         required: true
         type: choice
-        default: dev
+        default: "dev"
         options:
-          - dev
-          - qa
-          - prod
+          - "dev"
+          - "stg"
+          - "prod"
   workflow_call:
     inputs:
       App_Version:
