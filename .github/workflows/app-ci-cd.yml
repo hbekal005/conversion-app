@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Conversion_App_End_To_End_CI_CD:
+  Read_Config:
     runs-on: ubuntu-latest
     outputs:
       APP_VERSION : ${{ steps.set-config-env.outputs.App_Version }}
@@ -33,16 +33,16 @@ jobs:
 
   Conversion_App_CI:
     name: Conversion_App CI
-    needs: [ Conversion_App_End_To_End_CI_CD ]
-    uses: ./github/workflows/app-ci.yml
+    needs: [ Read_Config ]
+    uses: ./.github/workflows/app-ci.yml
     with:
       App_Version: ${{ needs.Conversion_App_End_To_End_CI_CD.outputs.APP_VERSION }}
     secrets: inherit
 
   # Conversion_App_CD:
   #   name: Conversion_App CD
-  #   needs: [ Conversion_App_End_To_End_CI_CD, Conversion_App_CI ]
-  #   uses: ./github/workflows/app-cd.yml
+  #   needs: [ Conversion_App_CI ]
+  #   uses: ./.github/workflows/app-cd.yml
   #   with:
   #     App_Version: ${{ needs.Conversion_App_End_To_End_CI_CD.outputs.APP_VERSION }}
   #     Environment: ${{ needs.Conversion_App_End_To_End_CI_CD.outputs.APP_ENV }}
