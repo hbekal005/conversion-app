@@ -86,7 +86,7 @@ jobs:
         run: |
           cd ${{ github.workspace }}/conversion-app-infra/ecs-fargate-cluster
           terraform plan \
-            -var "application_image_name=${{ inputs.App_Version }}" \
+            -var "application_image_version=${{ inputs.App_Version }}" \
             -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" \
             -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
             -out=ecs-tfplan
