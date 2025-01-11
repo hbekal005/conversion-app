@@ -34,7 +34,7 @@ jobs:
   Conversion_App_CI:
     name: Conversion_App CI
     needs: [ Conversion_App_End_To_End_CI_CD ]
-    uses: ./github/workflows/app-cd.yml
+    uses: ./github/workflows/app-ci.yml
     with:
       App_Version: ${{ needs.Conversion_App_End_To_End_CI_CD.outputs.APP_VERSION }}
     secrets: inherit
