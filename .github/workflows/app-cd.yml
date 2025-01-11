@@ -1,5 +1,5 @@
 name: Application_CD_Workflow
-run-name: ${{github.event.inputs.Environment}}: conversion-app:${{ github.event.inputs.App_Version }}
+run-name: ${{ inputs.App_Version }}-conversion-app:${{ inputs.App_Version }}
 
 on:
   workflow_dispatch:
@@ -13,12 +13,8 @@ on:
       Environment:
         description: 'Input Environment to Deploy'
         required: true
-        type: choice
+        type: string
         default: "dev"
-        options:
-          - "dev"
-          - "stg"
-          - "prod"
 
 jobs:
   App_Deploy:

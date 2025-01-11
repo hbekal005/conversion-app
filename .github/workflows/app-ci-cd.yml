@@ -1,5 +1,5 @@
 name: Application_CI_CD_Workflow
-run-name: Conversion_App CI/CD Workflow
+run-name: Conversion_App_CI/CD_Workflow
 
 on:
   workflow_dispatch:
