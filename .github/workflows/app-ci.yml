@@ -3,6 +3,12 @@ run-name: conversion-app:${{ inputs.App_Version }}
 
 on:
   workflow_dispatch:
+    inputs:
+      App_Version:
+        description: 'Input App Version to Build and Test'
+        required: true
+        type: string
+        default: "latest"
   workflow_call:
     inputs:
       App_Version:
