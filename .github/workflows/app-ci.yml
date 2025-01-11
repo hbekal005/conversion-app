@@ -1,5 +1,5 @@
 name: Application_CI_Workflow
-run-name: conversion-app:${{ github.event.inputs.App_Version }}
+run-name: conversion-app:${{ inputs.App_Version }}
 
 on:
   workflow_dispatch:
@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Print App Version
         run: |
-          echo "App Version: ${{ github.event.inputs.App_Version }}"
+          echo "App Version: ${{ inputs.App_Version }}"
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -42,7 +42,7 @@ jobs:
 
       - name: Docker Build
         run: |
-          docker build -t conversion-app:${{ github.event.inputs.App_Version }} -f ${{github.workspace}}/Dockerfile .
+          docker build -t conversion-app:${{ inputs.App_Version }} -f ${{github.workspace}}/Dockerfile .
           
 
       - name: Login to Docker Hub

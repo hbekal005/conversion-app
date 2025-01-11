@@ -32,7 +32,7 @@ jobs:
           echo "::set-output name=App_Env::${{ env.APP_DEPLOY_CONFIG_APP_ENV }}"
 
   Conversion_App_CI:
-    name: Conversion_App CI
+    name: Conversion_App_CI
     needs: [ Read_Config ]
     uses: ./.github/workflows/app-ci.yml
     with:
@@ -40,7 +40,7 @@ jobs:
     secrets: inherit
 
   # Conversion_App_CD:
-  #   name: Conversion_App CD
+  #   name: Conversion_App_CD
   #   needs: [ Read_Config, Conversion_App_CI ]
   #   uses: ./.github/workflows/app-cd.yml
   #   with:
