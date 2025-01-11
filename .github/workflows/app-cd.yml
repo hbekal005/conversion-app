@@ -1,5 +1,5 @@
 name: Application_CD_Workflow
-run-name: ${{ inputs.App_Version }}-conversion-app:${{ inputs.App_Version }}
+run-name: Conversion-App Deploy ${{ inputs.App_Version }}:${{ inputs.Environment }}
 
 on:
   workflow_dispatch:
