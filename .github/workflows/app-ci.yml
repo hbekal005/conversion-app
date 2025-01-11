@@ -38,18 +38,22 @@ jobs:
         run: mvn clean package
 
       - name: Test with Maven
+        if: success()
         run: mvn test
 
       - name: Docker Build
+        if: success()
         run: |
           docker build -t conversion-app:${{ inputs.App_Version }} -f ${{github.workspace}}/Dockerfile .
           
 
       - name: Login to Docker Hub
+        if: success()
         run: |
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
       - name: Docker Tag and Push
+        if: success()
         run: |
           docker tag conversion-app:${{ inputs.App_Version }} ${{ secrets.DOCKER_USERNAME }}/conversion-app:${{ inputs.App_Version }}
           docker push ${{ secrets.DOCKER_USERNAME }}/conversion-app:${{ inputs.App_Version }}

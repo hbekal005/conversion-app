@@ -23,6 +23,7 @@ jobs:
           prefix: APP_DEPLOY_CONFIG
 
       - name: Print and Set Environment Variables
+        if: success()
         id: set-config-env
         run: |
           echo "App_Version: ${{ env.APP_DEPLOY_CONFIG_APP_VERSION }}"
