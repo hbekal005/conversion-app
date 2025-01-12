@@ -58,9 +58,9 @@ Please refer to the worflow diagram
 
 ![Complete_CI_Workflow](images/App_CD_Workflow.jpeg)
 
-Application CD can be triggered individually so that the application can be deployed to AWS Environmet to ECS Cluster. 
+Application CD can be triggered individually so that the application can be deployed to AWS Environment to ECS Fargate Cluster. 
 
-Any valid docker image can be used as deploy. (Please ensure that the relevant configuration information is updated accordingly in the Terraform Variable File)
+Any valid docker image can be used to deploy. (Please ensure that the relevant configuration information is updated accordingly in the Infra Repo which uses Terraform)
 
 **Infra Repo** for App Config Updates: **https://github.com/hbekal005/conversion-app-infra.git**
 
