@@ -1,5 +1,21 @@
 # conversion-app
 
+## API Sample:
+- **<ECS_LB_DNS>:/validate?value=84.2&inputUnit=Fahrenheit&targetUnit=Rankine&studentResponse=543.94**
+
+## Sample Respone:
+{
+    "convertedValue": 543.9,
+    "response"      : "correct:
+}
+
+## Postman API Sample
+![API](images/FrontEnd.png)
+
+## Application FrontEnd
+![Conversion_App_FrontEnd](images/correct.png)
+
+
 **GitHub Actions Varibles in conversion-app Repo**
 - **AWS_REGION** : "us-east-1"
 
