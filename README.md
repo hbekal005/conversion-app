@@ -10,10 +10,10 @@
 }
 
 ## Postman API Sample
-![API](images/FrontEnd.png)
+![API](images/correct.png)
 
 ## Application FrontEnd
-![Conversion_App_FrontEnd](images/correct.png)
+![Conversion_App_FrontEnd](images/FrontEnd.png)
 
 
 **GitHub Actions Varibles in conversion-app Repo**
