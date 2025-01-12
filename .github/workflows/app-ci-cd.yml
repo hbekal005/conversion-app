@@ -3,7 +3,10 @@ run-name: Conversion_App_CI/CD_Workflow
 
 on:
   workflow_dispatch:
-
+  push:
+    branches:
+      - main
+  
 jobs:
   Read_Config:
     runs-on: ubuntu-latest
