@@ -95,3 +95,12 @@ Any valid docker image can be used to deploy. (Please ensure that the relevant c
 Please refer to the worflow diagram
 
 **Note** : Please use the right **App_Version** and **Environment** while running the workflow.
+
+
+## Suggested Improvements
+
+1.	Register a domain and link to the ECS AWS LB via the A-record and Route53 service so that user can access frontend via static domain name.
+2.	Implement better security in GitHub by having the right ruleset implemented
+3.	Have an automated way / workflow for application versioning.
+4.	Branch protection rules and Code Security in GitHub Repo for both (conversion-app & conversion-app-infra)
+5.	Provide better guardrails on Terraform / App Deprovision Workflow.
