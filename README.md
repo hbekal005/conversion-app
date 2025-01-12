@@ -25,7 +25,7 @@ To run any workflow team / users just need access to the repo and run the workfl
 
 The complete workflow is triggered only when code from **(feature/ and bugfix/)** is merged to **main** branch
 
-The **App_Version** and **Deployment Environment** os comtrolled by **conversion-app-deploy-config.json** ensure that these are updated accrodingly.
+The **App_Version** and **Deployment Environment** is comtrolled by **conversion-app-deploy-config.json** ensure that these are updated accrodingly before creating a Pull Request.
 
 
 ### Available Deployment Environments (case sensitive)
