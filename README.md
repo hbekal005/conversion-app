@@ -1,14 +1,14 @@
 # conversion-app
 
 **GitHub Actions Varibles in conversion-app Repo**
-    **AWS_REGION** : "us-east-1"
+- **AWS_REGION** : "us-east-1"
 
 **GitHub Actions Secrets in conversion-app Repo**
-    **AWS_ACCESS_KEY_ID** : hidden
-    **AWS_SECRET_ACCESS_KEY** : hidden
-    **DOCKER_PASSWORD** : hidden
-    **DOCKER_USERNAME** : hidden
-    **GIT_INFRA_REPO_TOKEN** : hidden
+- **AWS_ACCESS_KEY_ID** : hidden
+- **AWS_SECRET_ACCESS_KEY** : hidden
+- **DOCKER_PASSWORD** : hidden
+- **DOCKER_USERNAME** : hidden
+- **GIT_INFRA_REPO_TOKEN** : hidden
 
 This Repository contains the Application Code and the workflow for **CI** and **CD** of the application.
 
@@ -69,11 +69,11 @@ Any valid docker image can be used as deploy. (Please ensure that the relevant c
 - **Environment** : **dev**
 
 **GitHub Actions Varibles in Infra Repo**
-    **AWS_REGION** : "us-east-1"
+- **AWS_REGION** : "us-east-1"
 
 **GitHub Actions Secrets in Infra Repo**
-    **AWS_ACCESS_KEY_ID** : hidden
-    **AWS_SECRET_ACCESS_KEY** : hidden
+- **AWS_ACCESS_KEY_ID** : hidden
+- **AWS_SECRET_ACCESS_KEY** : hidden
 
 
 Please refer to the worflow diagram
