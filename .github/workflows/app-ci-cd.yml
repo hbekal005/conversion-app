@@ -12,7 +12,6 @@ jobs:
     outputs:
       APP_VERSION : ${{ steps.set-config-env.outputs.App_Version }}
       APP_ENV : ${{ steps.set-config-env.outputs.App_Env }}
-    if: startsWith(github.head_ref, 'feature/*') || startsWith(github.head_ref, 'bugfix/*')
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -37,7 +36,6 @@ jobs:
   Conversion_App_CI:
     name: Conversion_App_CI_${{ needs.Read_Config.outputs.APP_VERSION }}
     needs: [ Read_Config ]
-    if: startsWith(github.head_ref, 'feature/') || startsWith(github.head_ref, 'bugfix/')
     uses: ./.github/workflows/app-ci.yml
     with:
       App_Version: ${{ needs.Read_Config.outputs.APP_VERSION }}
@@ -45,7 +43,6 @@ jobs:
 
   Conversion_App_CD:
     name: Conversion_App_CD_${{ needs.Read_Config.outputs.APP_VERSION }}-${{ needs.Read_Config.outputs.APP_ENV }}
-    if: startsWith(github.head_ref, 'feature/') || startsWith(github.head_ref, 'bugfix/')
     needs: [ Read_Config, Conversion_App_CI ]
     uses: ./.github/workflows/app-cd.yml
     with:

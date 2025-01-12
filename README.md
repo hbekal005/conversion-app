@@ -23,7 +23,7 @@ To run any workflow team / users just need access to the repo and run the workfl
 ![Complete_CI_CD_Workflow](images/App_CI_CD_Workflow.jpeg)
 
 
-The complete workflow is triggered only when code from **(feature/ and bugfix/)** is merged to **main** branch
+The complete workflow is triggered only when code from branch is merged to **main** branch
 
 The **App_Version** and **Deployment Environment** is comtrolled by **conversion-app-deploy-config.json** ensure that these are updated accrodingly before creating a Pull Request.
 
