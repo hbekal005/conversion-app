@@ -47,6 +47,20 @@ jobs:
           token: ${{ secrets.GIT_INFRA_REPO_TOKEN }}
           path: conversion-app-infra
 
+      - name: Checkov Scan
+        id: checkov-scan
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: ${{ github.workspace }}/conversion-app-infra/ecs-fargate-cluster
+          output_format: cli,sarif
+          output_file_path: console,checkov-results.sarif
+  
+      - name: Upload Checkov Results
+        uses: actions/upload-artifact@v4
+        with:
+          path: ${{ github.workspace }}/conversion-app-infra/ecs-fargate-cluster/
+          name: checkov-results.sarif
+
       - name: Setup Terraform
         id: setup-terraform
         uses: hashicorp/setup-terraform@v3
